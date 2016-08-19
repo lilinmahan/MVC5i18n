@@ -5,6 +5,8 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using MVC5i18n.Helpers;
+using MVC5i18n.Manager.Session;
+using MVC5i18n.Models;
 
 namespace MVC5i18n.Controllers
 {
@@ -31,5 +33,39 @@ namespace MVC5i18n.Controllers
 
             return base.BeginExecuteCore(callback, state);
         }
+
+        [ChildActionOnly]
+        [AllowAnonymous]
+        public virtual ActionResult Localize()
+        {
+            return PartialView();
+        }
+
+
+        public ActionResult SetCulture(string culture)
+        {
+            // Validate input
+            culture = CultureHelper.GetImplementedCulture(culture);
+
+            // Save culture in a cookie
+            HttpCookie cookie = Request.Cookies["_culture"];
+            if (cookie != null)
+                cookie.Value = culture;   // update cookie value
+            else
+            {
+
+                cookie = new HttpCookie("_culture");
+                cookie.Value = culture;
+                cookie.Expires = DateTime.Now.AddYears(1);
+            }
+            Response.Cookies.Add(cookie);
+
+            if (Request.UrlReferrer != null)
+                return Redirect(Request.UrlReferrer.AbsolutePath + Request.UrlReferrer.Query);
+            else
+                return RedirectToAction("Index", "Home");
+        }
     }
+
+    
 }

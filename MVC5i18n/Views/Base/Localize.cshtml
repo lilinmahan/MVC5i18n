@@ -1,0 +1,9 @@
+﻿@using MVC5i18n.Helpers
+<script type="text/javascript">
+</script>
+@using (Html.BeginForm("SetCulture", "Base"))
+{
+    var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
+    @Html.Hidden("culture",culture)
+    @Html.SelectMenu("language",culture , new {@class = "custom"});
+}

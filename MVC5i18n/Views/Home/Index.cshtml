@@ -5,48 +5,9 @@
     var culture = System.Threading.Thread.CurrentThread.CurrentUICulture.Name.ToLowerInvariant();
 }
 
-@helper selected(string c, string culture)
-{
-    if (c == culture)
-    {
-        @:checked="checked"
-    }
-}
 
 <h2>@Resource.AddPerson</h2>
 
-@using (Html.BeginForm("SetCulture", "Home"))
-{
-    <fieldset>
-        <legend>@Resource.ChooseYourLanguage</legend>
-
-        <div class="control-group">
-            <div class="controls">
-                <label for="en-us">
-                    <input name="culture" id="en-us" value="en-us" type="radio" @selected("en-us", culture) /> English
-                </label>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="controls">
-                <label for="fr">
-                    <input name="culture" id="fr" value="fr" type="radio" @selected("fr", culture) /> Français
-                </label>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="controls">
-                <label for="ar">
-                    <input name="culture" id="ar" value="ar" type="radio" @selected("ar", culture) /> العربية
-                </label>
-            </div>
-        </div>
-
-
-    </fieldset>
-}
 
 @using (Html.BeginForm())
 {
@@ -110,7 +71,8 @@
 
     <script type="text/javascript">
         (function ($) {
-            $("input[type = 'radio']").click(function () {
+            $(".language").click(function () {
+                $("#culture").val(this.text);
                 $(this).parents("form").submit(); // post form
             });
 
